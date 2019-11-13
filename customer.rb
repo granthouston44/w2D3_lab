@@ -1,11 +1,13 @@
 class Customer
 
-  attr_reader :name, :wallet
+  attr_reader :name, :wallet, :age, :drunkenness
 
-  def initialize(name, wallet)
+  def initialize(name, wallet, age)
     @name = name
     @wallet = wallet
     @drink = []
+    @age = age
+    @drunkenness = 0
   end
 
   def drink_count
@@ -20,11 +22,8 @@ class Customer
     @wallet -= drink.price
   end
 
-  def buy_drink(drink, pub)
-    add_drink(drink)
-    spend_money(drink)
-    pub.sell_drink(drink)
-    pub.add_money(drink)
+  def increase_drunkenness(drink)
+    @drunkenness += drink.alcohol
   end
 
 end
