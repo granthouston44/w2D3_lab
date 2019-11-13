@@ -51,14 +51,14 @@ class PubTest < MiniTest::Test
     #given
 
     #then
-    result = @pub.of_age(@customer1)
+    result = @pub.of_age?(@customer1)
     #when
-    assert_equal("Aye there ye go wee man!", result)
+    assert_equal(true, result)
   end
 
   def test_custoemr_underage
-    result = @pub.of_age(@customer2)
-    assert_equal("Naw! Bolt!", result)
+    result = @pub.of_age?(@customer2)
+    assert_equal(false, result)
   end
 
   def test_customer_drunkenness_drunk
@@ -76,12 +76,7 @@ class PubTest < MiniTest::Test
     assert_equal("Here ye go mate!", result)
   end
 
-  def test_customer_drunkenness_sober
-    result = @pub.service(@customer2, @drink3)
-    assert_equal("Here ye go mate!", result)
-  end
-
-  def test_buy_drink
+  def test_buy_drink_sober
     # @customer1.buy_drink(@drink3, @pub)
     # @customer1.buy_drink(@drink3, @pub)
     # @customer1.buy_drink(@drink3, @pub)
@@ -89,7 +84,7 @@ class PubTest < MiniTest::Test
     @pub.service(@customer1, @drink3)
     # @pub.service(@customer1, @drink3)
     # @pub.service(@customer1, @drink3)
-    @pub.of_age(@customer1)
+    # @pub.of_age?(@customer1)
     assert_equal(1, @customer1.drink_count)
     assert_equal(54, @customer1.wallet)
     assert_equal(2, @pub.stock_count)
@@ -97,17 +92,25 @@ class PubTest < MiniTest::Test
     assert_equal(4, @customer1.drunkenness)
   end
 
-  def test_buy_drink_not_served
+  def test_buy_drink_not_served_too_drunk
     @pub.service(@customer1, @drink3)
     @pub.service(@customer1, @drink3)
     @pub.service(@customer1, @drink3)
     @pub.service(@customer1, @drink3)
-    @pub.of_age(@customer1)
     assert_equal(3, @customer1.drink_count)
     assert_equal(42, @customer1.wallet)
     assert_equal(2, @pub.stock_count)
     assert_equal(18, @pub.till)
     assert_equal(12, @customer1.drunkenness)
+  end
+
+  def test_buy_drink_too_young
+    @pub.service(@customer2, @drink3)
+    assert_equal(0, @customer2.drink_count)
+    assert_equal(20, @customer2.wallet)
+    assert_equal(3, @pub.stock_count)
+    assert_equal(0, @pub.till)
+    assert_equal(0, @customer2.drunkenness)
   end
 
 
