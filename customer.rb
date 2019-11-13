@@ -26,4 +26,8 @@ class Customer
     @drunkenness += drink.alcohol
   end
 
+  def eat(food)
+    @drunkenness -= food.rejuvenation
+  end
+
 end
